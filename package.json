@@ -4,6 +4,7 @@
   "description": "I18n version of fact skill.",
   "main": "index.js",
   "scripts": {
+    "build": "zip lamda.zip index.js node_modules/*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -15,6 +16,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "alexa-sdk": "^1.0.12",
-    "async": "^2.6.0"
+    "async": "^2.6.0",
+    "honyaku": "^1.0.1"
   }
 }
