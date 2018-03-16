@@ -1,6 +1,6 @@
-# Alexa Skill
+# Lambda code for Alexa Skill
 
-- Alexa skill by node.js
+- Node.js on Lanbda for Alexa skill
 - ref: https://github.com/alexa/skill-sample-nodejs-fact
 
 ## nodejs env
