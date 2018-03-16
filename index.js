@@ -4,6 +4,11 @@ var Alexa = require('alexa-sdk');
 // set ENV in AWS developper Skill
 var APP_ID = process.env.APP_ID;
 
+const states = {
+  PROGRESS: '_PROGRESSMODE',
+  BEGIN: "_BEGINMODE"
+};
+
 var SKILL_NAME = "豆知識";
 var GET_FACT_MESSAGE = "知ってましたか？";
 var HELP_MESSAGE = "豆知識を聞きたい時は「豆知識」と、終わりたい時は「おしまい」と言ってください。どうしますか？";
@@ -36,7 +41,9 @@ exports.handler = function(event, context, callback) {
 
 var handlers = {
     'LaunchRequest': function () {
-        this.emit('GetNewFactIntent');
+        this.handler.state = states.BEGIN;
+        this.emitWithState("StartSkill");
+        // this.emit('GetNewFactIntent');
     },
     'GetNewFactIntent': function () {
         var factArr = data;
@@ -44,6 +51,10 @@ var handlers = {
         var randomFact = factArr[factIndex];
         var speechOutput = GET_FACT_MESSAGE + randomFact;
         this.emit(':tellWithCard', speechOutput, SKILL_NAME, randomFact)
+    },
+    'ConvIntent': function () {
+      console.info('this is intent')
+      this.emit(':tellWithCard', 'インテント', SKILL_NAME, 'インテント')
     },
     'AMAZON.HelpIntent': function () {
         var speechOutput = HELP_MESSAGE;
@@ -57,3 +68,16 @@ var handlers = {
         this.emit(':tell', STOP_MESSAGE);
     }
 };
+
+// state of starting of this skill
+var startStateHandlers = Alexa.CreateStateHandler(states.BEGIN, {
+    "StartSkill": function () {
+      this.handler.state = states.PROGRESS;
+      this.attributes['advance'] = 1;
+      this.attributes['correct'] = 0;
+      var message = "メッセージ";
+      var reprompt = "もう一度";
+      this.emit(':ask', message, reprompt); // wait 
+      console.log(message);
+    }
+});
